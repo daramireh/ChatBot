@@ -11,7 +11,6 @@ certifi==2023.7.22
 chardet==3.0.4
 charset-normalizer==3.3.0
 click==8.1.7
-command-not-found==0.3
 compressed-rtf==1.0.6
 cryptography==3.4.8
 dataclasses-json==0.6.1
