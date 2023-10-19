@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Ingeniero de Soporte</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        #chat-header {
+            text-align: center;
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        #chat-container {
+            width: calc(100% - 30px);  /* Ajustamos el ancho al 100% menos los paddings */
+            max-width: 500px;  /* Establecemos un ancho máximo */
+            height: 500px;
+            border: 1px solid #ddd;
+            background-color: white;
+            overflow: auto;
+            padding: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        #input-container {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        #user-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="chat-header">
+        <h2>CHAT DE SOPORTE KONCILIA</h2>
+        <img src="tu_ruta_de_imagen.jpg" alt="Logo Koncilia" width="100"> <!-- Aquí puedes poner la ruta de tu imagen -->
+    </div>
+
+    <div id="chat-container">
+        <!-- Aquí aparecerán los mensajes del chat -->
+    </div>
+
+    <div id="input-container">
+        <input type="text" id="user-input" placeholder="Escribe tu pregunta...">
+        <button onclick="submitQuestion()">Enviar</button>
+    </div>
+
+    <script>
+        function appendMessage(role, message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.innerHTML = `<b>${role}:</b> ${message}`;
+            document.getElementById('chat-container').appendChild(messageDiv);
+        }
+
+        function submitQuestion() {
+            const userInput = document.getElementById('user-input').value;
+            if (userInput) {
+                appendMessage('User', userInput);
+
+                // Llamar a la función del backend para obtener la respuesta
+                fetch('/get-response', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        question: userInput
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    appendMessage('Ingeniero de Soporte', data.answer);
+                })
+                .catch(error => console.error('Error:', error));
+
+                document.getElementById('user-input').value = '';
+            }
+        }
+    </script>
+
+</body>
+
+</html>
